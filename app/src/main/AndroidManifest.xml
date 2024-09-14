@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ASLI"
         tools:targetApi="31">
+
+        <activity android:name=".CameraScreenActivity"
+            android:exported="true"
+            android:label="Camera Screen"
+            android:theme="@style/Theme.ASLI"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -26,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
