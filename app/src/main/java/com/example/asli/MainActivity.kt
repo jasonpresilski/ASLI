@@ -1,24 +1,29 @@
 package com.example.asli
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import com.example.asli.ui.theme.ASLITheme
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inflate the home_screen.xml layout
-        setContentView(R.layout.home_screen)
-
-        // Find the camera button by its ID and set a click listener
-        val cameraButton = findViewById<ImageButton>(R.id.cameraButton)
-        cameraButton.setOnClickListener {
-            // Navigate to CameraScreenActivity when the button is clicked
-            val intent = Intent(this, CameraScreenActivity::class.java)
-            startActivity(intent)
+        // Set the content to use Jetpack Compose UI
+        setContent {
+            ASLITheme { // Use your app's theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    // Call HomeScreen as the main UI
+                    HomeScreenUI()
+                }
+            }
         }
     }
 }

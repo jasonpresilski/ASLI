@@ -28,13 +28,12 @@
             android:id="@+id/appName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Signify"
             android:textSize="36sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
-            android:textColor="#5974A4"
             android:fontFamily="sans-serif-medium"
             android:layout_gravity="center" />
+
     </LinearLayout>
 
     <!-- Subtitle Text -->
