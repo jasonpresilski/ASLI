@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.asli.ui.theme.ASLITheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.CameraAlt
 import com.example.asli.R
 import androidx.compose.ui.text.font.FontWeight
 
@@ -31,7 +32,7 @@ fun HomeScreenUI() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFEDF8FF))
+            .background(Color(0xFFC8E7F9))
             .padding(16.dp)
     ) {
         Column(
@@ -100,9 +101,9 @@ fun HomeScreenUI() {
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB3B3B3))
         ) {
             Icon(
-                imageVector = Icons.Filled.Camera,  // Change later
+                imageVector = Icons.Filled.CameraAlt,  // Change later
                 contentDescription = "Camera Icon",
-                tint = Color.White
+                tint = Color(0xFF3385C6)
             )
         }
     }
