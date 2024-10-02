@@ -18,10 +18,10 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.video.AudioConfig
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,11 +45,12 @@ import com.example.asli.ui.theme.ASLITheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
 import java.net.URL
+import org.json.JSONObject
 
 class CameraScreenActivity : ComponentActivity() {
 
@@ -116,7 +117,8 @@ class CameraScreenActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .padding(10.dp,5.dp)
                                         .clip(shape = RoundedCornerShape(15.dp,15.dp,15.dp,15.dp))
-                                        .height(50.dp)
+                                        //.height(50.dp)
+                                        .defaultMinSize(0.dp,50.dp)
                                         .background(Color.Black),
                                     contentAlignment = Alignment.CenterStart
                                 ) {
@@ -231,16 +233,47 @@ class CameraScreenActivity : ComponentActivity() {
     }
     private suspend fun SendVideo(mp4 : ByteArray) : String
     {
-        try
-        {
-
+        try {
             val url = URL("http://20.11.54.176:8123/api/predict/")
+
+            val client = OkHttpClient()
+            val reqbuilder = Request.Builder()
+                .url(url)
+                .post(
+                    MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart(
+                            "video",
+                            "sign.mp4",
+                            mp4.toRequestBody("video".toMediaTypeOrNull())
+                        )
+                        .build()
+                )
+                .addHeader("Accept", "application/json")
+            val req = reqbuilder.build()
+
+            val resp = client.newCall(req).execute()
+
+            if (resp.code == 200 || resp.code == 201) {
+                val respbody = resp.body?.string()
+                //return respbody ?: ""
+                return JSONObject(respbody).getString("result")
+                //return JSONObject.getType()
+            }
+        }
+
+            /*val url = URL("http://20.11.54.176:8123/api/predict/")
+
 
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "POST"
             val reqdata = mp4
-            connection.setRequestProperty("Content-Type", "video/mp4")
+            connection.setRequestProperty("Content-Type", "video")
+            //connection.setRequestProperty("Content-Type", "multipart/form-data;boundary")
             connection.setRequestProperty("Accept", "application/json")
+            connection.setRequestProperty("Content-Length", reqdata.size.toString())
+
+            //val entity = MultipartFormBody("video", reqdata)
 
             connection.doOutput = true
             connection.outputStream.write(reqdata)
@@ -263,7 +296,7 @@ class CameraScreenActivity : ComponentActivity() {
             //boxList.add(response.toString())
             }
             return "Error code: $respCode"
-        }
+        }*/
         catch (e: Exception)
         {
             //Toast.makeText(this, "Connection error", Toast.LENGTH_LONG).show()
