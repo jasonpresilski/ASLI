@@ -38,6 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.Text
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -51,6 +54,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.net.URL
 import org.json.JSONObject
+import androidx.compose.ui.unit.dp
 
 class CameraScreenActivity : ComponentActivity() {
 
@@ -107,19 +111,57 @@ class CameraScreenActivity : ComponentActivity() {
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(Color.Gray), // Background for the box area
+                                //.background(Color.Gray), // Background for the box area
+                                /*.background(
+                                    brush = Brush.radialGradient(
+                                        colors = listOf(
+                                            Color.Gray.copy(alpha = 1f),
+                                            Color.DarkGray.copy(alpha = 0.7f),
+                                            Color.DarkGray.copy(alpha = 1f),
+                                            //Color.Gray.copy(alpha = 0.7f)
+                                        ),
+                                        center = Offset(30f,30f),
+                                        //center = DpOffset(80.dp,0.dp).,
+                                        radius = 200f
+                                    )
+                                ),*/
+                                .background(
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(Color.DarkGray, Color.Gray),
+                                        start = Offset(0f, 0f),
+                                        end = Offset(0f, 600f)
+                                    )
+                                ),
                             reverseLayout = true, // Start the newest items from the bottom
-                            horizontalAlignment = Alignment.CenterHorizontally // Center horizontally
+                            //horizontalAlignment = Alignment.CenterHorizontally // Center horizontally
                         ) {
                             items(boxList) { text ->
                                 Box(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(10.dp,5.dp)
+                                        //.fillMaxWidth()
+                                        .padding(15.dp,5.dp)
                                         .clip(shape = RoundedCornerShape(15.dp,15.dp,15.dp,15.dp))
                                         //.height(50.dp)
                                         .defaultMinSize(0.dp,50.dp)
-                                        .background(Color.Black),
+                                        //.background(Color.Black),
+                                        /*.background(
+                                            brush = Brush.radialGradient(
+                                                colors = listOf(
+                                                    Color.Black.copy(alpha = 1f),
+                                                    Color.Black.copy(alpha = 0.85f),
+                                                    Color.Black.copy(alpha = 0.7f)
+                                                ),
+                                                center = Offset(0f,50f),
+                                                radius = 50f
+                                            )
+                                        ),*/
+                                        .background(
+                                            brush = Brush.linearGradient(
+                                                colors = listOf(Color.Black, Color.Black.copy(alpha = 0.85f)),
+                                                start = Offset(0f, 0f),
+                                                end = Offset(200f, 0f)
+                                            )
+                                        ),
                                     contentAlignment = Alignment.CenterStart
                                 ) {
                                     Text(
@@ -127,7 +169,7 @@ class CameraScreenActivity : ComponentActivity() {
                                         color = Color.Yellow,
                                         fontSize = 16.sp,
                                         modifier = Modifier
-                                            .padding(start = 16.dp)
+                                            .padding(start = 16.dp, end = 15.dp)
                                     )
                                 }
                                 }
@@ -234,7 +276,7 @@ class CameraScreenActivity : ComponentActivity() {
     private suspend fun SendVideo(mp4 : ByteArray) : String
     {
         try {
-            val url = URL("http://20.11.54.176:8123/api/predict/")
+            val url = URL("http://194.61.22.23:8123/api/predict/")
 
             val client = OkHttpClient()
             val reqbuilder = Request.Builder()
