@@ -132,7 +132,7 @@ class CameraScreenActivity : ComponentActivity() {
                                         end = Offset(0f, 600f)
                                     )
                                 ),
-                            reverseLayout = true, // Start the newest items from the bottom
+                            //reverseLayout = true, // Start the newest items from the bottom
                             //horizontalAlignment = Alignment.CenterHorizontally // Center horizontally
                         ) {
                             items(boxList) { text ->
